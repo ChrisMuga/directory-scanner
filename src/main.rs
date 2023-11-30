@@ -11,7 +11,11 @@ fn main() -> Result<(), std::io::Error> {
 //  - The nesting should be visually pleasing or distinguishing
 
 fn scan(dir: &str, nest: bool) -> Result<(), std::io::Error> {
-    let entries = fs::read_dir(dir)?
+    let ignore_directories: [&str; 1] = [&"node_modules"];
+
+
+    let entries = fs::read_dir(dir)
+        .unwrap()
         .map(|res| res.map(|e| e.path()))
         .collect::<Result<Vec<_>, io::Error>>()?;
 
@@ -36,11 +40,21 @@ fn scan(dir: &str, nest: bool) -> Result<(), std::io::Error> {
 
         // Check if file is a directory, then call recursively 
         if metadata?.is_dir() {
-            let is_hidden = entry_name.chars().nth(0).unwrap() == '.';
-            if !is_hidden {
-                println!("\t ===> {}", entry_name);
-                let _ = scan(&absolute_path.to_str().unwrap(), true);
+            let is_dotfile = entry_name
+                                .chars()
+                                .nth(0)
+                                .unwrap() == '.';
+
+            let should_ignore = ignore_directories
+                                    .iter()
+                                    .any(|&x| x == entry_name);
+
+            if should_ignore || is_dotfile {
+                continue;
             }
+
+            println!("\t ===> {}", entry_name);
+            let _ = scan(&absolute_path.to_str().unwrap(), true);
         }
     }
 
