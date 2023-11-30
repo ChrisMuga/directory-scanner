@@ -16,7 +16,7 @@ dependencies = [
 ]
 
 [[package]]
-name = "contra"
+name = "directory-scanner"
 version = "0.1.0"
 dependencies = [
  "console",
