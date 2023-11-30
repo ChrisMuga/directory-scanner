@@ -16,3 +16,10 @@ Given directory:
 
 _(binary executable is located in `/target`)_
 
+
+## TODOs
+
+ - Format displays
+ - Ignore certain directories
+    - .dotfiles
+    - Folders in the `ignore_directories` array
