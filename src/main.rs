@@ -36,7 +36,7 @@ fn scan(dir: &str, nest: bool, count:&mut usize) -> Result<(), std::io::Error> {
 
         let separator = match nest {
             false => "",
-            true => "\t"
+            true => &"\t".repeat(*count)
         };
 
         println!("{}{}", separator, &entry_name);
