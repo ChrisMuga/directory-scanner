@@ -5,3 +5,14 @@ Given directory:
  - Nest if a directory has more sub-directory
  - The nesting should be visually pleasing or distinguishing
 
+
+## How To Run
+
+> `cargo run`
+
+## How To Build
+
+> `cargo build`
+
+_(binary executable is located in `/target`)_
+
