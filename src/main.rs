@@ -2,7 +2,10 @@ use std::{fs, io};
 
 fn main() -> Result<(), std::io::Error> {
     println!("Directory Listing");
-    return scan(".", false);
+
+    let mut count = 0;
+
+    return scan(".", false, &mut count);
 }
 
 // Given directory:
@@ -10,16 +13,16 @@ fn main() -> Result<(), std::io::Error> {
 //  - Nest if a directory has more sub-directory
 //  - The nesting should be visually pleasing or distinguishing
 
-fn scan(dir: &str, nest: bool) -> Result<(), std::io::Error> {
+fn scan(dir: &str, nest: bool, count:&mut usize) -> Result<(), std::io::Error> {
     let ignore_directories: [&str; 1] = [&"node_modules"];
 
-
     let entries = fs::read_dir(dir)
-        .unwrap()
-        .map(|res| res.map(|e| e.path()))
-        .collect::<Result<Vec<_>, io::Error>>()?;
+                    .unwrap()
+                    .map(|res| res.map(|e| e.path()))
+                    .collect::<Result<Vec<_>, io::Error>>()?;
 
     for entry in entries.iter() {
+
         let path = entry.as_path();
         let absolute_path = fs::canonicalize(&entry).unwrap();
 
@@ -28,6 +31,8 @@ fn scan(dir: &str, nest: bool) -> Result<(), std::io::Error> {
                             .unwrap()
                             .to_str()
                             .unwrap();
+
+        println!("{:?}", count);
 
         let separator = match nest {
             false => "",
@@ -52,9 +57,12 @@ fn scan(dir: &str, nest: bool) -> Result<(), std::io::Error> {
             if should_ignore || is_dotfile {
                 continue;
             }
+            
+            *count += 1;
 
-            println!("\t ===> {}", entry_name);
-            let _ = scan(&absolute_path.to_str().unwrap(), true);
+            let _ = scan(&absolute_path.to_str().unwrap(), true, count);
+
+            *count -= 1
         }
     }
 
