@@ -1,7 +1,7 @@
 use std::{fs, io};
 
 fn main() -> Result<(), std::io::Error> {
-    println!("Directory Listing");
+    println!("Directory Listing:\n=======\n");
 
     let mut count = 0;
 
@@ -32,11 +32,11 @@ fn scan(dir: &str, nest: bool, count:&mut usize) -> Result<(), std::io::Error> {
                             .to_str()
                             .unwrap();
 
-        println!("{:?}", count);
+        let tab_space = &"\t".repeat(*count);
 
         let separator = match nest {
             false => "",
-            true => &"\t".repeat(*count)
+            true => tab_space
         };
 
         println!("{}{}", separator, &entry_name);
