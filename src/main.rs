@@ -1,7 +1,7 @@
 use std::{fs, io};
 
 fn main() -> Result<(), std::io::Error> {
-    println!("Directory Listing:\n=======\n");
+    println!("Directory Listing:\n=======");
 
     let mut count = 0;
 
